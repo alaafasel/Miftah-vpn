@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: miftah_postgres
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      TZ: UTC
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    networks:
+      - miftah_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: miftah_backend
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_HOST: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:8000:8000"
+    networks:
+      - miftah_net
+
+networks:
+  miftah_net:
+    driver: bridge

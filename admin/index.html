@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MIFTAH CONTROL</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="login" class="center">
+  <form id="loginForm" class="card">
+    <h1>MIFTAH CONTROL</h1>
+    <p class="muted">لوحة إدارة مفتاح</p>
+    <input id="u" placeholder="اسم المستخدم" autocomplete="username" required>
+    <input id="p" type="password" placeholder="كلمة المرور" autocomplete="current-password" required>
+    <button type="submit">دخول</button>
+    <p id="loginErr" class="err"></p>
+  </form>
+</div>
+<div id="shell" hidden>
+  <aside id="nav"></aside>
+  <main>
+    <header><b id="title"></b><button id="logout" class="ghost">خروج</button></header>
+    <section id="view"></section>
+  </main>
+</div>
+<script src="app.js"></script>
+<script src="pages.js"></script>
+</body>
+</html>

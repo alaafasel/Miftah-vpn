@@ -1,0 +1,18 @@
+[Unit]
+Description=MIFTAH Xray Manager Agent
+After=network-online.target xray.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+EnvironmentFile=/etc/miftah-agent.env
+WorkingDirectory=/opt/miftah-xray-manager
+ExecStart=/opt/miftah-xray-manager/venv/bin/uvicorn agent:app --host 127.0.0.1 --port 8090
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

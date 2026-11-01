@@ -1,0 +1,33 @@
+{
+	email admin@zankoline.co
+	servers {
+		protocols h1 h2
+	}
+}
+
+app.zankoline.co {
+	encode zstd gzip
+	redir /panel /panel/
+	handle /panel/* {
+		uri strip_prefix /panel
+		root * /srv/panel
+		file_server
+	}
+	handle {
+		reverse_proxy backend:8000
+	}
+}
+
+https://130.61.112.125:8443 {
+	tls internal
+	encode zstd gzip
+	redir /panel /panel/
+	handle /panel/* {
+		uri strip_prefix /panel
+		root * /srv/panel
+		file_server
+	}
+	handle {
+		reverse_proxy backend:8000
+	}
+}

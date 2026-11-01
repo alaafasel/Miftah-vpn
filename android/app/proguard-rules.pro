@@ -1,0 +1,4 @@
+-keep class libXray.** { *; }
+-keep class com.miftah.vpn.xray.** { *; }
+-keepclasseswithmembernames class * { native <methods>; }
+-dontwarn org.slf4j.**

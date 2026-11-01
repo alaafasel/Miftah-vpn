@@ -1,0 +1,29 @@
+{
+	email admin@zankoline.co
+	servers {
+		protocols h1 h2
+	}
+}
+
+app.zankoline.co {
+	encode zstd gzip
+
+	header Strict-Transport-Security "max-age=31536000; includeSubDomains"
+	header X-Content-Type-Options "nosniff"
+	header X-Frame-Options "DENY"
+	header Referrer-Policy "no-referrer"
+	header -Server
+
+	redir /panel /panel/
+
+	handle /panel/* {
+		header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+		uri strip_prefix /panel
+		root * /srv/panel
+		file_server
+	}
+
+	handle {
+		reverse_proxy backend:8000
+	}
+}

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MIFTAH VPN</string>
+    <string name="brand_ar">مفتاح</string>
+    <string name="tagline">مفتاحك إلى اتصال آمن</string>
+
+    <string name="activation_title">تفعيل مفتاح</string>
+    <string name="activation_hint">أدخل كود التفعيل</string>
+    <string name="activation_button">تفعيل</string>
+    <string name="activation_note">يتم التحقق من الكود عبر السيرفر وربطه بهذا الجهاز.</string>
+
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_proxies">البروكسي</string>
+    <string name="nav_account">الحساب</string>
+
+    <string name="connect">اتصال</string>
+    <string name="disconnect">فصل</string>
+    <string name="status_connected">متصل</string>
+    <string name="status_disconnected">غير متصل</string>
+    <string name="status_connecting">جارٍ الاتصال…</string>
+    <string name="license_active">الترخيص نشط</string>
+    <string name="license_expired">انتهى الاشتراك</string>
+    <string name="remaining_days">متبقي %1$d يوم</string>
+    <string name="selected_proxy">البروكسي: %1$s</string>
+    <string name="no_proxy">لم يتم اختيار بروكسي</string>
+    <string name="proxies_title">اختر البروكسي</string>
+    <string name="proxies_note">القائمة يحددها المدير. لا يمكن إدخال عنوان يدوياً.</string>
+    <string name="account_title">الحساب</string>
+    <string name="activation_date">تاريخ التفعيل</string>
+    <string name="expiry_date">تاريخ الانتهاء</string>
+    <string name="device_info">معلومات الجهاز</string>
+    <string name="unbind_device">فك ارتباط الجهاز</string>
+    <string name="unbind_confirm">سيتم تحرير هذا الجهاز من الكود. ستحتاج إلى كود جديد أو إعادة ربط من المدير.</string>
+    <string name="refresh">تحديث</string>
+    <string name="error_generic">حدث خطأ، حاول مرة أخرى</string>
+    <string name="notif_channel">حالة الاتصال</string>
+    <string name="notif_title">MIFTAH VPN</string>
+    <string name="notif_text">الاتصال نشط عبر %1$s</string>
+    <string name="vpn_permission_denied">تم رفض إذن VPN</string>
+</resources>

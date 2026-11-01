@@ -1,0 +1,24 @@
+services:
+  caddy:
+    image: caddy:2
+    container_name: miftah_caddy
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+      - "80:80"
+      - "443:443"
+      - "8443:8443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./admin:/srv/panel:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - miftah_net
+
+volumes:
+  caddy_data:
+  caddy_config:
