@@ -90,7 +90,8 @@ mkdir -p "${HERE}/tun2socks/jni"
 
 cat > "${HERE}/tun2socks/jni/Android.mk" <<'EOF'
 LOCAL_PATH := $(call my-dir)
-HEV_PATH := $(LOCAL_PATH)/../third_party/hev-socks5-tunnel
+MIFTAH_JNI_PATH := $(LOCAL_PATH)
+HEV_PATH := $(MIFTAH_JNI_PATH)/../third_party/hev-socks5-tunnel
 
 include $(CLEAR_VARS)
 LOCAL_MODULE := hev-task-system
@@ -107,6 +108,7 @@ LOCAL_MODULE := yaml
 SRCDIR := $(HEV_PATH)/third-part/yaml
 include $(HEV_PATH)/third-part/yaml/Android.mk
 
+LOCAL_PATH := $(MIFTAH_JNI_PATH)
 include $(CLEAR_VARS)
 LOCAL_MODULE := miftah-tun
 LOCAL_SRC_FILES := ../miftah_tun.c
