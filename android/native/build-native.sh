@@ -67,31 +67,80 @@ gomobile bind \
 
 log "AAR written to app/libs/libXray.aar"
 
-# --------------------------------------------------------- 2) tun2socks JNI .so
+# --------------------------------------------------------- 2) tun2socks JNI
 log "Building hev-socks5-tunnel JNI library"
+
 cd "${HERE}/tun2socks"
 
-if [ ! -d third_party/hev-socks5-tunnel ]; then
+HEV_DIR="${HERE}/tun2socks/third_party/hev-socks5-tunnel"
+
+if [ ! -d "${HEV_DIR}/third-part/hev-task-system" ]; then
+  rm -rf "${HEV_DIR}"
   git clone --depth 1 --recursive \
     https://github.com/heiher/hev-socks5-tunnel.git \
-    third_party/hev-socks5-tunnel
+    "${HEV_DIR}"
 fi
-# Submodules are needed even when the parent repo already exists.
-git -C third_party/hev-socks5-tunnel submodule update --init --recursive
+
+git -C "${HEV_DIR}" submodule update --init --recursive
+
+cat > "${HERE}/tun2socks/jni/Android.mk" <<'EOF'
+LOCAL_PATH := $(call my-dir)
+HEV_PATH := $(LOCAL_PATH)/../third_party/hev-socks5-tunnel
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := hev-task-system
+SRCDIR := $(HEV_PATH)/third-part/hev-task-system
+include $(HEV_PATH)/third-part/hev-task-system/Android.mk
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := lwip
+SRCDIR := $(HEV_PATH)/third-part/lwip
+include $(HEV_PATH)/third-part/lwip/Android.mk
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := yaml
+SRCDIR := $(HEV_PATH)/third-part/yaml
+include $(HEV_PATH)/third-part/yaml/Android.mk
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := miftah-tun
+LOCAL_SRC_FILES := ../miftah_tun.c
+LOCAL_C_INCLUDES := \
+    $(HEV_PATH)/src \
+    $(HEV_PATH)/third-part/hev-task-system/include
+LOCAL_STATIC_LIBRARIES := hev-socks5-tunnel
+LOCAL_LDLIBS := -llog
+include $(BUILD_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := hev-socks5-tunnel
+SRCDIR := $(HEV_PATH)
+include $(HEV_PATH)/Android.mk
+EOF
+
+cat > "${HERE}/tun2socks/jni/Application.mk" <<'EOF'
+APP_OPTIM := release
+APP_PLATFORM := android-26
+APP_ABI := arm64-v8a armeabi-v7a
+APP_CFLAGS := -O3
+NDK_TOOLCHAIN_VERSION := clang
+EOF
 
 for abi in ${ABIS}; do
-  log "cmake ${abi}"
-  BUILD="build-${abi}"
-  rm -rf "${BUILD}"
-  cmake -S . -B "${BUILD}" \
-    -DCMAKE_TOOLCHAIN_FILE="${NDK_DIR}/build/cmake/android.toolchain.cmake" \
-    -DANDROID_ABI="${abi}" \
-    -DANDROID_PLATFORM="android-${ANDROID_API}" \
-    -DCMAKE_BUILD_TYPE=Release
-  cmake --build "${BUILD}" --parallel
-
-  mkdir -p "${APP_DIR}/app/src/main/jniLibs/${abi}"
-  cp "${BUILD}/libmiftah-tun.so" "${APP_DIR}/app/src/main/jniLibs/${abi}/"
+  log "ndk-build ${abi}"
+  APP_ABI="${abi}" ndk-build \
+    NDK_PROJECT_PATH="${HERE}/tun2socks" \
+    APP_BUILD_SCRIPT="${HERE}/tun2socks/jni/Android.mk" \
+    NDK_APPLICATION_MK="${HERE}/tun2socks/jni/Application.mk" \
+    NDK_OUT="${HERE}/tun2socks/obj-${abi}" \
+    NDK_LIBS_OUT="${APP_DIR}/app/src/main/jniLibs" \
+    clean
+  APP_ABI="${abi}" ndk-build \
+    NDK_PROJECT_PATH="${HERE}/tun2socks" \
+    APP_BUILD_SCRIPT="${HERE}/tun2socks/jni/Android.mk" \
+    NDK_APPLICATION_MK="${HERE}/tun2socks/jni/Application.mk" \
+    NDK_OUT="${HERE}/tun2socks/obj-${abi}" \
+    NDK_LIBS_OUT="${APP_DIR}/app/src/main/jniLibs"
 done
 
 log "Done."
