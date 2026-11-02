@@ -26,7 +26,7 @@ command -v cmake >/dev/null || die "cmake not found (sdkmanager 'cmake;3.22.1')"
 NDK_DIR="$(ls -d "${ANDROID_HOME}"/ndk/* 2>/dev/null | sort -V | tail -1)"
 [ -n "${NDK_DIR}" ] || die "no NDK directory found"
 log "NDK: ${NDK_DIR}"
-export PATH="${NDK_DIR}:${PATH}"
+export PATH="${NDK_DIR}:${NDK_DIR}/build:${PATH}"
 log "Go:  $(go version)"
 
 # ------------------------------------------------------------- 1) Xray-core AAR
@@ -133,14 +133,14 @@ EOF
 
 for abi in ${ABIS}; do
   log "ndk-build ${abi}"
-  APP_ABI="${abi}" ndk-build \
+  APP_ABI="${abi}" "${NDK_DIR}/ndk-build" \
     NDK_PROJECT_PATH="${HERE}/tun2socks" \
     APP_BUILD_SCRIPT="${HERE}/tun2socks/jni/Android.mk" \
     NDK_APPLICATION_MK="${HERE}/tun2socks/jni/Application.mk" \
     NDK_OUT="${HERE}/tun2socks/obj-${abi}" \
     NDK_LIBS_OUT="${APP_DIR}/app/src/main/jniLibs" \
     clean
-  APP_ABI="${abi}" ndk-build \
+  APP_ABI="${abi}" "${NDK_DIR}/ndk-build" \
     NDK_PROJECT_PATH="${HERE}/tun2socks" \
     APP_BUILD_SCRIPT="${HERE}/tun2socks/jni/Android.mk" \
     NDK_APPLICATION_MK="${HERE}/tun2socks/jni/Application.mk" \
