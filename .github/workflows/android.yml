@@ -1,0 +1,95 @@
+name: Build MIFTAH APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      api_base:
+        description: "Control plane base URL (must be https and end with /)"
+        required: true
+        default: "https://app.zankoline.co/"
+  push:
+    branches: [main, master]
+    paths:
+      - "android/**"
+      - ".github/workflows/android.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Go 1.22
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install SDK packages
+        run: |
+          sdkmanager --install \
+            "platform-tools" \
+            "platforms;android-35" \
+            "build-tools;35.0.0" \
+            "ndk;27.0.12077973" \
+            "cmake;3.22.1"
+          yes | sdkmanager --licenses > /dev/null || true
+
+      - name: Build native libraries (Xray AAR + tun2socks .so)
+        env:
+          ABIS: "arm64-v8a armeabi-v7a"
+        run: |
+          chmod +x android/native/build-native.sh
+          cd android/native
+          ./build-native.sh
+
+      - name: Gradle 8.9
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Build debug APK
+        run: |
+          cd android
+          gradle assembleDebug \
+            -Pmiftah.apiBase="${{ github.event.inputs.api_base || 'https://app.zankoline.co/' }}" \
+            --no-daemon --stacktrace
+
+      - name: Rename APK
+        run: |
+          mkdir -p out
+          cp android/app/build/outputs/apk/debug/*.apk out/miftah.apk
+          ls -lh out/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: miftah-debug-apk
+          path: out/miftah.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Publish to Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: MIFTAH APK build ${{ github.run_number }}
+          body: |
+            MIFTAH VPN - debug APK
+            api_base: ${{ github.event.inputs.api_base || 'https://app.zankoline.co/' }}
+          files: out/miftah.apk
+          make_latest: true

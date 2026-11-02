@@ -1,0 +1,30 @@
+# secrets
+.env
+keystore.properties
+*.jks
+*.keystore
+
+# runtime data
+postgres/data/
+backups/
+caddy_data/
+caddy_config/
+
+# binaries
+xray/bin/xray
+xray/bin/*.dat
+
+# android build output
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/libs/*.aar
+android/app/src/main/jniLibs/
+android/native/tun2socks/third_party/
+android/native/tun2socks/build-*/
+
+# python
+__pycache__/
+*.pyc
+.venv/
