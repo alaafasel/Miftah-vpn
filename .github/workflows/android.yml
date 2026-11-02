@@ -20,7 +20,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 120
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -49,7 +48,7 @@ jobs:
             "cmake;3.22.1"
           yes | sdkmanager --licenses > /dev/null || true
 
-      - name: Build native libraries (Xray AAR + tun2socks .so)
+      - name: Build native libraries
         env:
           ABIS: "arm64-v8a armeabi-v7a"
         run: |
@@ -69,7 +68,7 @@ jobs:
             -Pmiftah.apiBase="${{ github.event.inputs.api_base || 'https://app.zankoline.co/' }}" \
             --no-daemon --stacktrace
 
-      - name: Rename APK
+      - name: Prepare APK
         run: |
           mkdir -p out
           cp android/app/build/outputs/apk/debug/*.apk out/miftah.apk
@@ -89,7 +88,7 @@ jobs:
           tag_name: build-${{ github.run_number }}
           name: MIFTAH APK build ${{ github.run_number }}
           body: |
-            MIFTAH VPN - debug APK
+            MIFTAH VPN debug APK
             api_base: ${{ github.event.inputs.api_base || 'https://app.zankoline.co/' }}
           files: out/miftah.apk
           make_latest: true
