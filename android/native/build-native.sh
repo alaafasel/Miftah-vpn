@@ -61,6 +61,7 @@ mkdir -p "${APP_DIR}/app/libs"
 gomobile bind \
   -target "${TARGETS}" \
   -androidapi "${ANDROID_API}" \
+  -ldflags="-checklinkname=0" \
   -o "${APP_DIR}/app/libs/libXray.aar" \
   .
 
