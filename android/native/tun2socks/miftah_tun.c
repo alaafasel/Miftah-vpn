@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "hev-socks5-tunnel.h"
+#include "hev-main.h"
 
 static pthread_t g_thread;
 static volatile int g_running = 0;
