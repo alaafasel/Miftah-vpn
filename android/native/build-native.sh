@@ -26,6 +26,7 @@ command -v cmake >/dev/null || die "cmake not found (sdkmanager 'cmake;3.22.1')"
 NDK_DIR="$(ls -d "${ANDROID_HOME}"/ndk/* 2>/dev/null | sort -V | tail -1)"
 [ -n "${NDK_DIR}" ] || die "no NDK directory found"
 log "NDK: ${NDK_DIR}"
+export PATH="${NDK_DIR}:${PATH}"
 log "Go:  $(go version)"
 
 # ------------------------------------------------------------- 1) Xray-core AAR
