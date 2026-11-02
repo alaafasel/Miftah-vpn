@@ -1,4 +1,4 @@
-i}port java.util.Properties
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -7,7 +7,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
-val apiBase: String = (project.findProperty("miftah.apiBase") as String) ?: "https://panel.example.com/"
+val apiBase: String = (project.findProperty("miftah.apiBase") as String?) ?: "https://panel.example.com/"
 
 android {
     namespace = "com.miftah.vpn"
@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "com.miftah.vpn"
-        minSkd = 26
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0.0"
@@ -24,25 +24,56 @@ android {
         resourceConfigurations += listOf("ar", "en")
     }
 
-    // Optional release signing: create keystore.properties next to this file.
-    val keystorePropsFile = rootProject.file("keystore.properties")
-    val keystoreProps = Properties().apply {
-        if (keystorePropsFile.exists()) keystorePropsFile.inputStream().use { load(it) }
-    }
-    val hasKeystore = keystoreProps.getProperty("storeFile") != null
-
-    signingConfigs {
-        if (hasKeystore) {
-            create("release") {
-                storeFile = file(keystoreProps.getProperty("storeFile"))
-                storePassword = keystoreProps.getProperty("storePassword")
-                keyAlias = keystoreProps.getProperty("keyAlias")
-                keyPassword = keystoreProps.getProperty("keyPassword")
-            }
-        }
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = true
-            isShrink^­•Í½ÕÉ•Ì€ôÑÉÕ”(€€€€€€€€€€€ÁÉ½Õ…É‘¥±•Ì (€€€€€€€€€€€€€€€•Ñ•™…Õ±ÑAÉ½Õ…É‘¥±” ‰ÁÉ½Õ…Éµ…¹‘É½¥µ½ÁÑ¥µ¥é”¹ÑáĞˆ¤°(€€€€€€€€€€€€€€€€‰ÁÉ½Õ…ÉµÉÕ±•Ì¹ÁÉ¼ˆ°(€€€€€€€€€€€€¤(€€€€€€€€€€€¥˜€¡¡…Í-•åÍÑ½É”¤Í¥¹¥¹½¹™¥œ€ôÍ¥¹¥¹½¹™¥Ì¹•Ñ	å9…µ” ‰É•±•…Í”ˆ¤(€€€€€€€ô(€€€€€€€‘•‰Õœì(€€€€€€€€€€€¥Í5¥¹¥™å¹…‰±•€ô™…±Í”(€€€€€€€ô(€€€ô((€€€½µÁ¥±•=ÁÑ¥½¹Ìì(€€€€€€€Í½ÕÉ•½µÁ…Ñ¥‰¥±¥Ñä€ô)…Ù…Y•ÉÍ¥½¸¹YIM%=9|ÄÜ(€€€€€€€Ñ…É•Ñ½µÁ…Ñ¥‰¥±¥Ñä€ô)…Ù…Y•ÉÍ¥½¸¹YIM%=9|ÄÜ(€€€ô(€€€­½Ñ±¥¹=ÁÑ¥½¹Ìì©ÙµQ…É•Ğ€ô€ˆÄÜˆô(€€€‰Õ¥±‘•…ÑÕÉ•Ìì(€€€€€€€½µÁ½Í”€ôÑÉÕ”(€€€€€€€‰Õ¥±‘½¹™¥œ€ôÑÉÕ”(€€€ô(€€€Á…­…¥¹œì(€€€€€€€É•Í½ÕÉ•Ì¹•á±Õ‘•Ì€¬ôÍ•Ñ=˜ ˆ½5Qµ%9½í0È¸À±1A0È¸Åôˆ¤(€€€ô)ô()‘•Á•¹‘•¹¥•Ìì(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹½É”é½É”µ­ÑàèÄ¸ÄÔ¸Àˆ¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹…Ñ¥Ù¥Ñäé…Ñ¥Ù¥Ñäµ½µÁ½Í”èÄ¸ä¸Ìˆ¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹±¥™•å±”é±¥™•å±”µÉÕ¹Ñ¥µ”µ­ÑàèÈ¸à¸Üˆ¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹±¥™•å±”é±¥™•å±”µÉÕ¹Ñ¥µ”µ½µÁ½Í”èÈ¸à¸Üˆ¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹±¥™•å±”é±¥™•å±”µÙ¥•İµ½‘•°µ½µÁ½Í”èÈ¸à¸Üˆ¤((€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸¡Á±…Ñ™½É´ ‰…¹‘É½¥‘à¹½µÁ½Í”é½µÁ½Í”µ‰½´èÈÀÈĞ¸ÄÈ¸ÀÄˆ¤¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹½µÁ½Í”¹Õ¤éÕ¤ˆ¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹½µÁ½Í”¹Õ¤éÕ¤µÑ½½±¥¹œµÁÉ•Ù¥•Üˆ¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹½µÁ½Í”¹µ…Ñ•É¥…°Ìéµ…Ñ•É¥…°Ìˆ¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹½µÁ½Í”¹µ…Ñ•É¥…°éµ…Ñ•É¥…°µ¥½¹Ìµ•áÑ•¹‘•ˆ¤((€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹Í•ÕÉ¥ÑäéÍ•ÕÉ¥ÑäµÉåÁÑ¼èÄ¸Ä¸Àµ…±Á¡„ÀØˆ¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹‘…Ñ…ÍÑ½É”é‘…Ñ…ÍÑ½É”µÁÉ•™•É•¹•ÌèÄ¸Ä¸Äˆ¤((€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰½´¹ÍÅÕ…É•ÕÀ¹½­¡ÑÑÀÌé½­¡ÑÑÀèĞ¸ÄÈ¸Àˆ¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰½Éœ¹©•Ñ‰É…¥¹Ì¹­½Ñ±¥¹àé­½Ñ±¥¹àµÍ•É¥…±¥é…Ñ¥½¸µ©Í½¸èÄ¸Ü¸Ìˆ¤(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸ ‰½Éœ¹©•Ñ‰É…¥¹Ì¹­½Ñ±¥¹àé­½Ñ±¥¹àµ½É½ÕÑ¥¹•Ìµ…¹‘É½¥èÄ¸ä¸Àˆ¤((€€€€¼¼aÉ…ä½É”€¡½µ½‰¥±”¤¸	Õ¥±İ¥Ñ ¹…Ñ¥Ù”½‰Õ¥±µ¹…Ñ¥Ù”¹Í …¹‘É½ÀÑ¡”H¡•É”¸(€€€¥µÁ±•µ•¹Ñ…Ñ¥½¸¡™¥±•QÉ•”¡µ…Á=˜ ‰‘¥ÈˆÑ¼€‰±¥‰Ìˆ°€‰¥¹±Õ‘”ˆÑ¼±¥ÍÑ=˜ ˆ¨¹……Èˆ°€ˆ¨¹©…Èˆ¤¤¤¤((€€€‘•‰Õ%µÁ±•µ•¹Ñ…Ñ¥½¸ ‰…¹‘É½¥‘à¹½µÁ½Í”¹Õ¤éÕ¤µÑ½½±¥¹œˆ¤)ô(
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
+        }
+        debug {
+            isMinifyEnabled = false
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+    kotlinOptions { jvmTarget = "17" }
+    buildFeatures {
+        compose = true
+        buildConfig = true
+    }
+    packaging {
+        resources.excludes += setOf("/META-INF/{AL2.0,LGPL2.1}")
+    }
+}
+
+dependencies {
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.activity:activity-compose:1.9.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+
+    implementation(platform("androidx.compose:compose-bom:2024.12.01"))
+    implementation("androidx.compose.ui:ui")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material:material-icons-extended")
+
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+
+    // Xray core (gomobile). Build with native/build-native.sh and drop the AAR here.
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
+
+    debugImplementation("androidx.compose.ui:ui-tooling")
+}
