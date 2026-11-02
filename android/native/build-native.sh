@@ -36,10 +36,12 @@ if [ ! -f go.sum ]; then
   go mod tidy
 fi
 
+MOBILE_VERSION="v0.0.0-20261011034528-197770444867"
+go get "golang.org/x/mobile@${MOBILE_VERSION}"
 if ! command -v gomobile >/dev/null; then
   log "installing gomobile"
-  go install golang.org/x/mobile/cmd/gomobile@latest
-  go install golang.org/x/mobile/cmd/gobind@latest
+  go install "golang.org/x/mobile/cmd/gomobile@${MOBILE_VERSION}"
+  go install "golang.org/x/mobile/cmd/gobind@${MOBILE_VERSION}"
   export PATH="${PATH}:$(go env GOPATH)/bin"
 fi
 gomobile init
