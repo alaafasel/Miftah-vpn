@@ -114,6 +114,7 @@ LOCAL_MODULE := miftah-tun
 LOCAL_SRC_FILES := ../miftah_tun.c
 LOCAL_C_INCLUDES := \
     $(HEV_PATH)/src \
+    $(HEV_PATH)/src/misc \
     $(HEV_PATH)/third-part/hev-task-system/include
 LOCAL_STATIC_LIBRARIES := hev-socks5-tunnel
 LOCAL_LDLIBS := -llog
