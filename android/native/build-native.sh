@@ -83,6 +83,8 @@ fi
 
 git -C "${HEV_DIR}" submodule update --init --recursive
 
+mkdir -p "${HERE}/tun2socks/jni"
+
 cat > "${HERE}/tun2socks/jni/Android.mk" <<'EOF'
 LOCAL_PATH := $(call my-dir)
 HEV_PATH := $(LOCAL_PATH)/../third_party/hev-socks5-tunnel
