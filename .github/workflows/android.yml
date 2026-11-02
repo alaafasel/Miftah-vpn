@@ -37,6 +37,12 @@ jobs:
 
       - name: Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          accept-android-sdk-licenses: false
+          packages: ''
+
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses
 
       - name: Install SDK packages
         run: |
@@ -46,7 +52,6 @@ jobs:
             "build-tools;35.0.0" \
             "ndk;27.0.12077973" \
             "cmake;3.22.1"
-          yes | sdkmanager --licenses > /dev/null || true
 
       - name: Build native libraries
         env:
